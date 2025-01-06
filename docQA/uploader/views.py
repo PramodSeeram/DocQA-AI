@@ -1,49 +1,60 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import DocumentForm
 from .models import UploadedDocument
 from .utils import extract_content_from_excel, generate_deepseek_response
 
 
 def upload_document(request):
-    # Initialize variables
-    content = None
+    # Default values to ensure clean state
+    content = ""  # Default empty content
     answer = None
     error_message = None
 
-    # Initialize form at the top to avoid UnboundLocalError
-    form = DocumentForm()  # Default empty form for GET requests
+    # Initialize form
+    form = DocumentForm()
 
-    # Handle file upload and state persistence
-    document = UploadedDocument.objects.last()  # Retrieve the last uploaded document
-    if document:
-        # Extract content for the last uploaded document
-        file_path = document.file.path
-        content = extract_content_from_excel(file_path)
+    # **Handle Reset Button Click**
+    if 'reset' in request.POST:
+        # 1. Clear uploaded files in the database
+        UploadedDocument.objects.all().delete()
 
-    if request.method == 'POST':
-        # Handle file upload
-        if 'file' in request.FILES:
-            form = DocumentForm(request.POST, request.FILES)  # Reinitialize form for POST
+        # 2. Clear session data (content, answer)
+        request.session.flush()  # Clears session variables
+
+        # 3. Redirect to refresh the page to a clean state
+        return redirect('upload')  # Redirect ensures no cached data is shown
+
+    # **Handle File Upload**
+    elif request.method == 'POST':
+        if 'file' in request.FILES:  # File upload form
+            form = DocumentForm(request.POST, request.FILES)
             if form.is_valid():
-                # Save the uploaded file
+                # Save uploaded file
                 document = form.save()
                 file_path = document.file.path
+                # Extract content and save it in session for persistence
                 content = extract_content_from_excel(file_path)
+                request.session['content'] = content  # Store content in session
             else:
                 error_message = form.errors.as_text()
 
-        # Handle question asking
+        # **Handle Question Asking**
         elif 'question' in request.POST:
             question = request.POST.get('question')
+            # Retrieve session content (if available)
+            content = request.session.get('content', "")
             if question and content:
-                # Generate AI response
+                # Generate AI response using DeepSeek
                 answer = generate_deepseek_response(question, content)
             else:
                 error_message = "No content available to process the question."
 
-    # Render the template with updated values
+    # Retrieve content from session for display
+    content = request.session.get('content', "")
+
+    # **Render Template**
     return render(request, 'uploader/upload.html', {
-        'form': form,              # Form is always defined now
+        'form': form,
         'content': content,
         'answer': answer,
         'error_message': error_message
@@ -51,5 +62,5 @@ def upload_document(request):
 
 
 def upload_success(request):
-    """ View for upload success page """
+    """ View for displaying success message """
     return render(request, 'uploader/success.html')

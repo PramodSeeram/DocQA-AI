@@ -18,6 +18,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn">Upload</button>
+                <button type="submit" name="reset" class="btn-reset">Reset</button>
             </form>
         </div>
 
@@ -39,8 +40,7 @@
             <!-- Q&A Section -->
             <div class="form-section">
                 <h2>Ask a Question</h2>
-                <!-- Action points to the same page -->
-                <form method="post" action="{% url 'upload' %}">
+                <form method="post">
                     {% csrf_token %}
                     <input type="text" name="question" placeholder="Ask a question about the document..." required class="input-field"/>
                     <button type="submit" class="btn">Ask</button>
