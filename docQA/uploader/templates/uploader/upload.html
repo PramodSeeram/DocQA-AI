@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Q&A</title>
+    <link rel="stylesheet" href="{% static 'uploader/css/style.css' %}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Document Q&A Application</h1>
+
+        <!-- File Upload Section -->
+        <div class="form-section">
+            <h2>Upload Document</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Upload</button>
+            </form>
+        </div>
+
+        <!-- Error Messages -->
+        {% if error_message %}
+            <div class="error-message">
+                <h3>Error:</h3>
+                <p>{{ error_message }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Display Extracted Content -->
+        {% if content %}
+            <div class="content-section">
+                <h2>Extracted Content:</h2>
+                <pre class="content-box">{{ content }}</pre>
+            </div>
+
+            <!-- Q&A Section -->
+            <div class="form-section">
+                <h2>Ask a Question</h2>
+                <!-- Action points to the same page -->
+                <form method="post" action="{% url 'upload' %}">
+                    {% csrf_token %}
+                    <input type="text" name="question" placeholder="Ask a question about the document..." required class="input-field"/>
+                    <button type="submit" class="btn">Ask</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <!-- Display AI Answer -->
+        {% if answer %}
+            <div class="answer-section">
+                <h2>Answer:</h2>
+                <p class="answer-box">{{ answer }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

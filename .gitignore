@@ -1,0 +1,4 @@
+.env
+docQA\uploads
+env
+docQA\db.sqlite3
