@@ -57,8 +57,8 @@ ROOT_URLCONF = 'docQA.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Leave empty for app-level templates
-        'APP_DIRS': True,  # Enable app-level templates
+        'DIRS': [],  
+        'APP_DIRS': True,  # Enabled for app-level templates
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

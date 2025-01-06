@@ -5,7 +5,7 @@ from .utils import extract_content_from_excel, generate_deepseek_response
 
 
 def upload_document(request):
-    # Default values to ensure clean state
+    # <!--Default values to ensure clean state-->
     content = ""  # Default empty content
     answer = None
     error_message = None
@@ -13,7 +13,7 @@ def upload_document(request):
     # Initialize form
     form = DocumentForm()
 
-    # **Handle Reset Button Click**
+    #<!--Handle Reset Button-->
     if 'reset' in request.POST:
         # 1. Clear uploaded files in the database
         UploadedDocument.objects.all().delete()
@@ -24,7 +24,7 @@ def upload_document(request):
         # 3. Redirect to refresh the page to a clean state
         return redirect('upload')  # Redirect ensures no cached data is shown
 
-    # **Handle File Upload**
+    # <!--File Upload -->
     elif request.method == 'POST':
         if 'file' in request.FILES:  # File upload form
             form = DocumentForm(request.POST, request.FILES)
@@ -38,7 +38,7 @@ def upload_document(request):
             else:
                 error_message = form.errors.as_text()
 
-        # **Handle Question Asking**
+        # *Handling of Questions Asked By user
         elif 'question' in request.POST:
             question = request.POST.get('question')
             # Retrieve session content (if available)
@@ -52,7 +52,7 @@ def upload_document(request):
     # Retrieve content from session for display
     content = request.session.get('content', "")
 
-    # **Render Template**
+    
     return render(request, 'uploader/upload.html', {
         'form': form,
         'content': content,
