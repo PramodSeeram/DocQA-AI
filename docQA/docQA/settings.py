@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-193wm6$)g+6j#ijzuf-4(k7!9#v*0%l@*j#13q1+--)cdiwj!i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['drivexproject.onrender.com','localhost','127.0.0.1']
 
 
 # Application definition
