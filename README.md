@@ -7,9 +7,13 @@ This app is perfect for professionals, researchers, analysts, or anyone who work
 ### Features
 
 -*Seamless Upload:* Upload .xlsx files effortlessly.
+
 -*AI-Powered Q&A:* Interact with the document by asking questions in natural language.
+
 -*Factual and Contextual Insights:* Whether you're asking for raw data or analysis, the AI understands and responds accurately.
+
 -*User-Friendly Design:* A clean and intuitive interface that requires minimal learning curve.
+
 -*Real-Time Interaction:* Receive instant answers, making your document exploration more efficient.
 
 This application takes the heavy lifting out of analyzing large datasets, allowing users to focus on insights rather than data entry. Whether you're looking for specific numbers, comparisons, or general trends, the AI-powered engine provides quick, relevant, and contextual answers directly derived from the uploaded document.
@@ -28,8 +32,9 @@ git clone https://github.com/PramodSeeram/DocQA-AI.git
 
 2. Install the required dependencies:
 
-```bash
 create a virtual env
+```bash
+
 
 pip install -r requirements.txt
 
